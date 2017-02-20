@@ -31,8 +31,8 @@ On Ubuntu ```cmake``` works fine.
 * Pixel Value Shifting
 
 * Convolution of various types including:
-** Image Smoothing
-** Edge Detection
+ * Image Smoothing
+ * Edge Detection
 
 * Various Order Statistics Filters
 * Point Processing Functions
