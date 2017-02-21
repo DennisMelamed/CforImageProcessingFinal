@@ -40,6 +40,7 @@ On Ubuntu ```cmake``` works fine.
 * A Menu System with undo functinality
 * Thresholding
 * Histogram Equilization
+
 ## To Be Implemented:
 * Code cleanup
 * Thorough commenting
