@@ -38,7 +38,8 @@ On Ubuntu ```cmake``` works fine.
 * Point Processing Functions
 * Region of Interest Selection
 * A Menu System with undo functinality
-
-## To Be Implemented:
 * Thresholding
 * Histogram Equilization
+## To Be Implemented:
+* Code cleanup
+* Thorough commenting
