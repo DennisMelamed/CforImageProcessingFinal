@@ -10,6 +10,8 @@ class MyFrame : public wxFrame {
         wxMenu     *fileMenu;//file menu
         wxMenu	   *lab6Menu;
         wxMenu	   *lab7Menu;
+        wxMenu	   *lab8Menu;
+        wxMenu     *lab9Menu;
         wxToolBar  *toolbar;//tollbar not necessary to use
         
         //ROI declarations
@@ -49,6 +51,18 @@ class MyFrame : public wxFrame {
         void OnRandLookupTableTransformImage(wxCommandEvent & event);
 
         
+        //lab 8
+        void OnHistogramEquilization(wxCommandEvent & event);
+        
+        //lab 9
+        void OnSimpleThresholdImage(wxCommandEvent & event);
+        void OnAutomatedThresholdImage(wxCommandEvent & event);
+        void FindInitialThreshold(wxImage loadedImage, double* thresh);
+        void FindInitialThreshold2(wxImage loadedImage, double* thresh);
+        double FindRedThreshold(wxImage loadedImage, double current_thresh);
+        double FindGreenThreshold(wxImage loadedImage, double current_thresh);
+        double FindBlueThreshold(wxImage loadedImage, double current_thresh);
+        
         //ROI methods
         void OnLeftDown( wxMouseEvent& event );
         void OnLeftUp( wxMouseEvent& event );
@@ -86,6 +100,11 @@ enum {
     LOG_TRANSFORM_IMAGE_ID,
     POWER_TRANSFORM_IMAGE_ID,
     RAND_LOOKUP_TABLE_TRANSFORM_ID,
+    //lab8
+    HISTOGRAM_EQUILIZATION_ID,
+    //lab9
+    SIMPLE_THRESHOLD_ID,
+    AUTOMATED_THRESHOLD_ID,
     //
     MY_IMAGE_ID, //--->To be modified!
     //ROI
