@@ -193,14 +193,13 @@ void MyFrame::OnScaleImage(wxCommandEvent & WXUNUSED(event)) {
 		if (!value.ToDouble(&factor)) {
 			printf("error!");
 		}
-		//cout << factor<< endl;
 
-		//free(loadedImage);
+
 		wxImage tmpImage = loadedImage.Copy();
 
 		double r, g, b;
 
-		//std::vector<std::vector<std::vector<double> > > rgb;
+
 		std::vector < std::vector<double>
 		> rvec(loadedImage.GetWidth(),
 				std::vector<double>(loadedImage.GetHeight(), 0));
@@ -210,9 +209,7 @@ void MyFrame::OnScaleImage(wxCommandEvent & WXUNUSED(event)) {
 		std::vector < std::vector<double>
 		> bvec(loadedImage.GetWidth(),
 				std::vector<double>(loadedImage.GetHeight(), 0));
-		//rgb.push_back(rvec);
-		//rgb.push_back(gvec);
-		//rgb.push_back(bvec);
+
 
 		double maxr = 255, maxg = 255, maxb = 255;
 		double minr = 0, ming = 0, minb = 0;
@@ -277,10 +274,10 @@ void MyFrame::OnScaleImage(wxCommandEvent & WXUNUSED(event)) {
 
 void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 	printf("Convolute function...");
-	//free(loadedImage);
+
 	wxImage tmpImage = loadedImage.Copy();
 
-	//unsigned char r, g, b;
+
 
 	double r, g, b;
 	int decision = 0;
@@ -288,7 +285,6 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 	int imgHeight = loadedImage.GetHeight();
 
 	wxArrayString choices;
-	//wxArrayString &choice = *choices;
 	choices.Add(_T("Averaging"));
 	choices.Add(_T("Weighted Averaging"));
 	choices.Add(_T("4 neighbor Laplace"));
@@ -461,14 +457,14 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 			r = 0;
 			b = 0;
 			g = 0;
-			//r = loadedImage->GetRed(i, j);
+
 
 			for (int a = -1; a < 2; a++) {
 				for (int c = -1; c < 2; c++) {
 
 					r += ((loadedImage.GetRed(i - c, j - a))
 							* mask[c + 1][a + 1]);
-					//printf("%f \n", mask[c+1][a+1]);
+					
 					g += ((loadedImage.GetGreen(i - c, j - a))
 							* mask[c + 1][a + 1]);
 					b += ((loadedImage.GetBlue(i - c, j - a))
@@ -492,7 +488,7 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 
 			if (maxb < b) {
 				maxb = b;
-				printf("maxb: %f", maxb);
+
 			}
 			if (minb > b) {
 				minb = b;
@@ -520,14 +516,13 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 				r = 0;
 				b = 0;
 				g = 0;
-				//r = loadedImage->GetRed(i, j);
+
 
 				for (int a = -1; a < 2; a++) {
 					for (int c = -1; c < 2; c++) {
 
 						r += ((loadedImage.GetRed(i - c, j - a))
 								* mask[c + 1][a + 1]);
-						//printf("%f \n", mask[c+1][a+1]);
 						g += ((loadedImage.GetGreen(i - c, j - a))
 								* mask[c + 1][a + 1]);
 						b += ((loadedImage.GetBlue(i - c, j - a))
@@ -551,14 +546,14 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 
 				if (maxb < b + bvec[i][j]) {
 					maxb = b;
-					//printf("maxb: %f", maxb);
+
 				}
 				if (minb > b + bvec[i][j]) {
 					minb = b;
 
 				}
 
-				//loadedImage->SetRGB(i,j,r,g,b);
+
 				rvecy[i][j] = r;
 				gvecy[i][j] = g;
 				bvecy[i][j] = b;
@@ -572,28 +567,21 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 
 	for (int i = 1; i < imgWidth - 1; i++) {
 		for (int j = 1; j < imgHeight - 1; j++) {
-			//			if(i == imgWidth-2 && j==imgHeight-2)
-			//			{
-			//				printf("minr: %f ming: %f minb: %f maxr: %f maxg: %f maxb: %f", minr, ming, minb, maxr, maxg, maxb);
-			//			}
+
 			r = rvec[i][j] + abs(minr);
 			g = gvec[i][j] + abs(ming);
-			b = bvec[i][j] + abs(minb);
-			//			if(i == imgWidth-2 && j==imgHeight-2)
-			//			{
-			//				printf("r: %f, g: %f, b: %f", r,g,b);
-			//			}
+
 			if (maxr > 255) {
 				r = round(r * (255 / (maxr + abs(minr))));
-				//printf("minr: %f ming: %f minb: %f maxr: %f maxg: %f maxb: %f", minr, ming, minb, maxr, maxg, maxb);
+
 			}
 			if (maxg > 255) {
 				g = round(g * (255 / (maxg + abs(ming))));
-				//printf("minr: %f ming: %f minb: %f maxr: %f maxg: %f maxb: %f", minr, ming, minb, maxr, maxg, maxb);
+
 			}
 			if (maxb > 255) {
 				b = round(b * (255 / (maxb + abs(minb))));
-				//printf("minr: %f ming: %f minb: %f maxr: %f maxg: %f maxb: %f", minr, ming, minb, maxr, maxg, maxb);
+
 			}
 			if (CheckIfInROI(i, j)) {
 				loadedImage.SetRGB(i, j, r, g, b);
@@ -609,7 +597,7 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 //My Function ---> To be modified!
 void MyFrame::OnMyFunctionImage(wxCommandEvent & WXUNUSED(event)) {
 
-	printf("My function...");
+	printf("Shifting Function");
 	wxImage tmpImage = loadedImage.Copy();
 
 	wxTextEntryDialog *openTextEntryDialog = new wxTextEntryDialog(this,
@@ -631,7 +619,7 @@ void MyFrame::OnMyFunctionImage(wxCommandEvent & WXUNUSED(event)) {
 				g = tmpImage.GetGreen(i, j) + round(shift); // green pixel value
 				b = tmpImage.GetBlue(i, j) + round(shift); // blue pixel value
 
-				//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 				r = r < 255 ? r : 255;
 				g = g < 255 ? g : 255;
@@ -648,7 +636,7 @@ void MyFrame::OnMyFunctionImage(wxCommandEvent & WXUNUSED(event)) {
 		}
 	}
 
-	printf(" Finished My function.\n");
+	printf(" Finished shifting function.\n");
 	Refresh();
 	UndoImages.push_back(loadedImage);
 }
@@ -672,23 +660,7 @@ void MyFrame::OnAddNoiseImage(wxCommandEvent & WXUNUSED(event)) {
 		}
 	}
 
-	//	unsigned char r,g,b;
-	//
-	//	for(int i=0; i< loadedImage.GetWidth(); i++) {
-	//		for(int j=0;j< loadedImage.GetHeight(); j++){
-	//			// GET THE RGB VALUES
-	//			r = tmpImage.GetRed(i,j);   // red pixel value
-	//			g = tmpImage.GetGreen(i,j); // green pixel value
-	//			b = tmpImage.GetBlue(i,j); // blue pixel value
-	//
-	//			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
-	//
-	//			// SAVE THE RGB VALUES
-	//			loadedImage.SetRGB(i, j, r, g, b);
-	//		}
-	//	}
 
-	//printf(" Finished My function.\n");
 	Refresh();
 	UndoImages.push_back(loadedImage);
 }
@@ -697,15 +669,11 @@ void MyFrame::OnMinFilterImage(wxCommandEvent & WXUNUSED(event)) {
 	printf("Min function...");
 	wxImage tmpImage = loadedImage.Copy();
 
-	//unsigned char r,g,b;
+
 
 	for (int i = 1; i < loadedImage.GetWidth() - 1; i++) {
 		for (int j = 1; j < loadedImage.GetHeight() - 1; j++) {
-			// GET THE RGB VALUES
 
-			//			r = tmpImage.GetRed(i,j);   // red pixel value
-			//			g = tmpImage.GetGreen(i,j); // green pixel value
-			//			b = tmpImage.GetBlue(i,j); // blue pixel value
 
 			int redVals[] = { tmpImage.GetRed(i - 1, j - 1), tmpImage.GetRed(
 					i - 1, j), tmpImage.GetRed(i - 1, j + 1), tmpImage.GetRed(i,
@@ -724,7 +692,7 @@ void MyFrame::OnMinFilterImage(wxCommandEvent & WXUNUSED(event)) {
 									j + 1), tmpImage.GetBlue(i + 1, j - 1), tmpImage.GetBlue(
 											i + 1, j), tmpImage.GetBlue(i + 1, j + 1) };
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
@@ -736,7 +704,7 @@ void MyFrame::OnMinFilterImage(wxCommandEvent & WXUNUSED(event)) {
 		}
 	}
 
-	//printf(" Finished My function.\n");
+
 	Refresh();
 	UndoImages.push_back(loadedImage);
 }
@@ -745,15 +713,11 @@ void MyFrame::OnMaxFilterImage(wxCommandEvent & WXUNUSED(event)) {
 	printf("Max function...");
 	wxImage tmpImage = loadedImage.Copy();
 
-	//unsigned char r,g,b;
+
 
 	for (int i = 1; i < loadedImage.GetWidth() - 1; i++) {
 		for (int j = 1; j < loadedImage.GetHeight() - 1; j++) {
-			// GET THE RGB VALUES
 
-			//			r = tmpImage.GetRed(i,j);   // red pixel value
-			//			g = tmpImage.GetGreen(i,j); // green pixel value
-			//			b = tmpImage.GetBlue(i,j); // blue pixel value
 
 			int redVals[] = { tmpImage.GetRed(i - 1, j - 1), tmpImage.GetRed(
 					i - 1, j), tmpImage.GetRed(i - 1, j + 1), tmpImage.GetRed(i,
@@ -772,7 +736,6 @@ void MyFrame::OnMaxFilterImage(wxCommandEvent & WXUNUSED(event)) {
 									j + 1), tmpImage.GetBlue(i + 1, j - 1), tmpImage.GetBlue(
 											i + 1, j), tmpImage.GetBlue(i + 1, j + 1) };
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
 
 			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
@@ -784,7 +747,7 @@ void MyFrame::OnMaxFilterImage(wxCommandEvent & WXUNUSED(event)) {
 		}
 	}
 
-	//printf(" Finished My function.\n");
+
 	Refresh();
 	UndoImages.push_back(loadedImage);
 }
@@ -793,15 +756,11 @@ void MyFrame::OnMidFilterImage(wxCommandEvent & WXUNUSED(event)) {
 	printf("Mid function...");
 	wxImage tmpImage = loadedImage.Copy();
 
-	//unsigned char r,g,b;
+
 
 	for (int i = 1; i < loadedImage.GetWidth() - 1; i++) {
 		for (int j = 1; j < loadedImage.GetHeight() - 1; j++) {
-			// GET THE RGB VALUES
 
-			//			r = tmpImage.GetRed(i,j);   // red pixel value
-			//			g = tmpImage.GetGreen(i,j); // green pixel value
-			//			b = tmpImage.GetBlue(i,j); // blue pixel value
 
 			int redVals[] = { tmpImage.GetRed(i - 1, j - 1), tmpImage.GetRed(
 					i - 1, j), tmpImage.GetRed(i - 1, j + 1), tmpImage.GetRed(i,
@@ -820,9 +779,6 @@ void MyFrame::OnMidFilterImage(wxCommandEvent & WXUNUSED(event)) {
 									j + 1), tmpImage.GetBlue(i + 1, j - 1), tmpImage.GetBlue(
 											i + 1, j), tmpImage.GetBlue(i + 1, j + 1) };
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
-
-			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
 				loadedImage.SetRGB(i, j,
 						round(
@@ -841,7 +797,7 @@ void MyFrame::OnMidFilterImage(wxCommandEvent & WXUNUSED(event)) {
 		}
 	}
 
-	//printf(" Finished My function.\n");
+
 	Refresh();
 	UndoImages.push_back(loadedImage);
 }
@@ -861,9 +817,7 @@ void MyFrame::OnNegLinearTransformImage(wxCommandEvent & WXUNUSED(event)) {
 			g = tmpImage.GetGreen(i, j); // green pixel value
 			b = tmpImage.GetBlue(i, j); // blue pixel value
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
 
-			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
 				loadedImage.SetRGB(i, j, 255 - r, 255 - g, 255 - b);
 			}
@@ -878,15 +832,15 @@ void MyFrame::OnNegLinearTransformImage(wxCommandEvent & WXUNUSED(event)) {
 void MyFrame::OnLogTransformImage(wxCommandEvent & WXUNUSED(event)) {
 	wxTextEntryDialog dlg(this, _T("Choose constant value"), _T(""), _T(""),
 			wxTextEntryDialogStyle, wxDefaultPosition);
-	//dlg.SetTextValidator(wxFILTER_ALPHA);
+
 	if (dlg.ShowModal() == wxID_OK) {
-		// We can be certain that this string contains letters only.
+
 		wxString value = dlg.GetValue();
 		double valueDouble;
 		if (!value.ToDouble(&valueDouble)) {
 			printf("error!");
 		}
-		printf("valueDouble: %f \n", valueDouble);
+
 		printf("Log Transform function...");
 		wxImage tmpImage = loadedImage.Copy();
 
@@ -899,9 +853,6 @@ void MyFrame::OnLogTransformImage(wxCommandEvent & WXUNUSED(event)) {
 				g = tmpImage.GetGreen(i, j); // green pixel value
 				b = tmpImage.GetBlue(i, j); // blue pixel value
 
-				//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
-
-				// SAVE THE RGB VALUES
 				if (CheckIfInROI(i, j)) {
 					loadedImage.SetRGB(i, j, valueDouble * log(1 + r),
 							valueDouble * log(1 + g), valueDouble * log(1 + b));
@@ -935,7 +886,7 @@ void MyFrame::OnPowerTransformImage(wxCommandEvent & WXUNUSED(event)) {
 			if (!power.ToDouble(&powerDouble)) {
 				printf("error!");
 			}
-			//printf("valueDouble: %f \n", valueDouble);
+
 			printf("Log Transform function...");
 			wxImage tmpImage = loadedImage.Copy();
 
@@ -948,7 +899,7 @@ void MyFrame::OnPowerTransformImage(wxCommandEvent & WXUNUSED(event)) {
 					g = tmpImage.GetGreen(i, j); // green pixel value
 					b = tmpImage.GetBlue(i, j); // blue pixel value
 
-					//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 					// SAVE THE RGB VALUES
 					if (CheckIfInROI(i, j)) {
@@ -984,9 +935,7 @@ void MyFrame::OnRandLookupTableTransformImage(
 			g = loadedImage.GetGreen(i, j); // green pixel value
 			b = loadedImage.GetBlue(i, j); // blue pixel value
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
 
-			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
 				loadedImage.SetRGB(i, j, RandomTable[r], RandomTable[g],
 						RandomTable[b]);
@@ -1028,7 +977,7 @@ void MyFrame::OnHistogramEquilization(wxCommandEvent & WXUNUSED(event)) {
 	}
 
 	for (int a = 0; a < 256; a++) {
-		//printf("count of red value %d: %d \n", a, HistoTableRed[a]);
+
 		if (a != 0) {
 			NormalizedRedTable[a] =
 					floor(
@@ -1068,7 +1017,7 @@ void MyFrame::OnHistogramEquilization(wxCommandEvent & WXUNUSED(event)) {
 					                  / (loadedImage.GetWidth()
 					                		  * loadedImage.GetHeight())));
 		}
-		//printf("cdf of red value %d: %f \n", a, NormalizedRedTable[a]);
+
 	}
 
 	for (int i = 0; i < loadedImage.GetWidth(); i++) {
@@ -1078,7 +1027,7 @@ void MyFrame::OnHistogramEquilization(wxCommandEvent & WXUNUSED(event)) {
 			g = loadedImage.GetGreen(i, j); // green pixel value
 			b = loadedImage.GetBlue(i, j); // blue pixel value
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
@@ -1114,7 +1063,7 @@ void MyFrame::OnSimpleThresholdImage(wxCommandEvent & WXUNUSED(event)) {
 				g = loadedImage.GetGreen(i, j); // green pixel value
 				b = loadedImage.GetBlue(i, j); // blue pixel value
 
-				//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 				// SAVE THE RGB VALUES
 				if (CheckIfInROI(i, j)) {
@@ -1139,45 +1088,39 @@ void MyFrame::OnAutomatedThresholdImage(wxCommandEvent & WXUNUSED(event)) {
 
 	double thresh [3];
 	double thresh2 [3];
-	//printf("in method\n");
+
 
 	FindInitialThreshold(loadedImage, thresh);
 	FindInitialThreshold2(loadedImage, thresh2);
-	//printf("intial thresholds found \n");
+
 
 	red_thresh = (thresh[0] + thresh2[0])/2;
 	green_thresh = (thresh[1] + thresh2[1])/2;
 	blue_thresh = (thresh[2] + thresh2[2])/2;
-	//printf("Initial thresholds: %f, %f, %f\n", red_thresh, green_thresh, blue_thresh);
-	//printf("thresh: %f, thresh1: %f\n", thresh[1], thresh2[1]);
 
 	old_red_thresh = 0;
 	old_green_thresh = 0;
 	old_blue_thresh = 0;
-	//printf("intial thresholds computed\n");
+
 
 	while(abs(red_thresh-old_red_thresh) > too_small_difference)
 	{
-		//printf("entered compute loop1 \n");
 		old_red_thresh = red_thresh;
 		red_thresh = FindRedThreshold(loadedImage, red_thresh);
 	}
 	while(abs(green_thresh-old_green_thresh) > too_small_difference)
 		{
-		//printf("entered compute loop2 \n");
 			old_green_thresh = green_thresh;
 			green_thresh = FindGreenThreshold(loadedImage, green_thresh);
-			//printf("exited compute loop2 \n");
 		}
 	while(abs(blue_thresh-old_blue_thresh) > too_small_difference)
 		{
-		//printf("entered compute loop3 \n");
 			old_blue_thresh = blue_thresh;
 			blue_thresh = FindBlueThreshold(loadedImage, blue_thresh);
 		}
 
 
-	printf("Threshold values being used: %f, %f, %f", red_thresh, green_thresh, blue_thresh);
+	printf("Threshold values being used: %f, %f, %f\n", red_thresh, green_thresh, blue_thresh);
 	for (int i = 0; i < loadedImage.GetWidth(); i++) {
 		for (int j = 0; j < loadedImage.GetHeight(); j++) {
 			// GET THE RGB VALUES
@@ -1185,7 +1128,7 @@ void MyFrame::OnAutomatedThresholdImage(wxCommandEvent & WXUNUSED(event)) {
 			g = loadedImage.GetGreen(i, j); // green pixel value
 			b = loadedImage.GetBlue(i, j); // blue pixel value
 
-			//printf("(%d,%d) [r = %x  | g = %x | b = %x] \n",i,j,r,g,b);
+
 
 			// SAVE THE RGB VALUES
 			if (CheckIfInROI(i, j)) {
@@ -1245,7 +1188,7 @@ void MyFrame::FindInitialThreshold2(wxImage loadedImage, double *thresh)
 			}
 		}
 	}
-	//printf("green_sum: %lu", green_sum);
+
 
 	thresh[0] = red_sum  /((loadedImage.GetHeight()*loadedImage.GetWidth())-4);
 	thresh[1] = green_sum/((loadedImage.GetHeight()*loadedImage.GetWidth())-4);
@@ -1392,13 +1335,10 @@ void MyFrame::OnMotion(wxMouseEvent& event) {
 
 void MyFrame::OnLeftUp(wxMouseEvent& event) {
 
-	//housekeeping
-	// m_rubberBand = false;
+
 	this->ReleaseMouse();
 	selecting = false;
-	//process the selection: run through the segments and redraw any that
-	//lie within the selection rectangle
-	//wxRect selection( m_currentpoint , wxPoint( event.GetX() , event.GetY() ) ) ;
+
 
 	ROI[0] = m_currentpoint.x < event.GetX() ? m_currentpoint.x : event.GetX();
 	ROI[1] = m_currentpoint.y < event.GetY() ? m_currentpoint.y : event.GetY();
@@ -1408,7 +1348,7 @@ void MyFrame::OnLeftUp(wxMouseEvent& event) {
 }
 
 bool MyFrame::CheckIfInROI(int x, int y) {
-	//printf("%d",(ROI[0] <= x && x <= ROI[2] && ROI[1] <= y && y <= ROI[3]));
+
 	return (ROI[0] <= x && x <= ROI[2] && ROI[1] <= y && y <= ROI[3]);
 
 }
