@@ -125,7 +125,7 @@ void MyFrame::OnOpenFile(wxCommandEvent & WXUNUSED(event)) {
 	if (openFileDialog.ShowModal() == wxID_OK) {
 		wxString filename = openFileDialog.GetFilename();
 		wxString path = openFileDialog.GetPath();
-		printf("Loading image form file...");
+		printf("Loading image from file...");
 
 		if (loadedImage.Ok()) {
 			loadedImage.Destroy();
@@ -1429,6 +1429,8 @@ void MyFrame::OnResetImage(wxCommandEvent & WXUNUSED(event)) {
 
 	if (origImage.Ok()) {
 		loadedImage = origImage.Copy();
+		UndoImages.clear();
+		UndoImages.push_back(loadedImage);
 		Refresh();
 	}
 
@@ -1455,7 +1457,7 @@ void MyFrame::OnPaint(wxPaintEvent & WXUNUSED(event)) {
 
 	wxAutoBufferedPaintDC dc(this);
 	if (loadedImage.Ok()) {
-		dc.DrawBitmap(wxBitmap(loadedImage), 0, 0, false); //given bitmap xcoord y coord and transparency
+		dc.DrawBitmap(wxBitmap(UndoImages.back().Copy()), 0, 0, false); //given bitmap xcoord y coord and transparency
 		ROI[0] = 0;
 		ROI[1] = 0;
 		ROI[2] = loadedImage.GetWidth();
@@ -1466,7 +1468,12 @@ void MyFrame::OnPaint(wxPaintEvent & WXUNUSED(event)) {
 }
 
 void MyFrame::Undo(wxCommandEvent & WXUNUSED(event)) {
-	if (UndoImages.size() > 0) {
+	wxCommandEvent foo;
+	if(UndoImages.size() == 2)
+	{
+		MyFrame::OnResetImage(foo);
+	}
+	else if (UndoImages.size() > 1) {
 		printf("Undo image...");
 		if (loadedImage.Ok()) {
 			loadedImage.Destroy();
@@ -1480,8 +1487,9 @@ void MyFrame::Undo(wxCommandEvent & WXUNUSED(event)) {
 
 		printf("Finished Undo.");
 
-		printf(" size of undo stack: %lu \n", UndoImages.size());
 		UndoImages.pop_back();
+		printf(" size of undo stack: %lu \n", UndoImages.size());
+		
 	} else {
 		printf("can't undo\n");
 	}
