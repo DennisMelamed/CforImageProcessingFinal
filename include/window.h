@@ -1,3 +1,20 @@
+#include <wx/wx.h>
+#include <wx/image.h>
+#include <wx/dcbuffer.h>
+
+#include <wx/app.h>
+#include <wx/frame.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/overlay.h>
+#include <wx/dcmemory.h>
+#include <wx/dcclient.h>
+#include <wx/vector.h>
+
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <window.h>
 
 class BasicApplication : public wxApp {
     public:
@@ -13,17 +30,17 @@ class MyFrame : public wxFrame {
         wxMenu	   *lab8Menu;
         wxMenu     *lab9Menu;
         wxToolBar  *toolbar;//tollbar not necessary to use
-        
+
         //ROI declarations
         wxPanel* m_canvas;
         wxPoint m_currentpoint;
         wxOverlay m_overlay;
         bool selecting;
-        
+
         int ROI [4];
-        
-        
-        
+
+
+
         std::vector<wxImage> UndoImages;
 
         int oldWidth, oldHeight; // save old dimensions
@@ -50,10 +67,10 @@ class MyFrame : public wxFrame {
         void OnPowerTransformImage(wxCommandEvent & event);
         void OnRandLookupTableTransformImage(wxCommandEvent & event);
 
-        
+
         //lab 8
         void OnHistogramEquilization(wxCommandEvent & event);
-        
+
         //lab 9
         void OnSimpleThresholdImage(wxCommandEvent & event);
         void OnAutomatedThresholdImage(wxCommandEvent & event);
@@ -62,15 +79,15 @@ class MyFrame : public wxFrame {
         double FindRedThreshold(wxImage loadedImage, double current_thresh);
         double FindGreenThreshold(wxImage loadedImage, double current_thresh);
         double FindBlueThreshold(wxImage loadedImage, double current_thresh);
-        
+
         //ROI methods
         void OnLeftDown( wxMouseEvent& event );
         void OnLeftUp( wxMouseEvent& event );
         void OnMotion( wxMouseEvent& event );
         bool CheckIfInROI(int x, int y);
-        
+
         void Undo(wxCommandEvent & event);
-        
+
     public:
         MyFrame(const wxString title, int xpos, int ypos, int width, int height);
         virtual ~MyFrame();
@@ -111,7 +128,7 @@ enum {
     LEFT_DOWN_ID,
     LEFT_UP_ID,
     MOTION_ID,
-    
+
     UNDO_ID
 
 };

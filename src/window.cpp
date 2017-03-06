@@ -22,7 +22,7 @@ IMPLEMENT_APP (BasicApplication)
 
 bool BasicApplication::OnInit() {
 	wxInitAllImageHandlers();
-	MyFrame *frame = new MyFrame(_("Basic Frame"), 50, 50, 800, 600);
+	MyFrame *frame = new MyFrame(_("C++ For Image Processing Coursework"), 50, 50, 800, 600);
 	frame->Show(TRUE);
 	SetTopWindow(frame);
 	return TRUE;
@@ -41,13 +41,17 @@ MyFrame::MyFrame(const wxString title, int xpos, int ypos, int width,
 	//----------------------START MY MENU -----------------------//
 	//###########################################################//
 
+	fileMenu->Append(UNDO_ID, _T("&Undo"));
 	fileMenu->Append(RESET_IMAGE_ID, _T("&Reset image"));
+	fileMenu->AppendSeparator();
+
 	fileMenu->Append(INVERT_IMAGE_ID, _T("&Invert image"));
 	fileMenu->Append(SCALE_IMAGE_ID, _T("&Scale image"));
+	fileMenu->Append(MY_IMAGE_ID, _T("&Shift image")); //--->To be modified!
 	fileMenu->Append(CONVOLUTE_IMAGE_ID, _T("&Convolute image"));
-	fileMenu->Append(MY_IMAGE_ID, _T("&Shift Function")); //--->To be modified!
 
-	fileMenu->Append(UNDO_ID, _T("&Undo"));
+
+
 
 	//###########################################################//
 	//----------------------END MY MENU -------------------------//
@@ -60,6 +64,7 @@ MyFrame::MyFrame(const wxString title, int xpos, int ypos, int width,
 	// MENU FOR LAB6
 	lab6Menu = new wxMenu;
 	lab6Menu->Append(NOISE_IMAGE_ID, _T("&Add  S/P Noise"));
+	fileMenu->AppendSeparator();
 	lab6Menu->Append(MIN_FILTER_IMAGE_ID, _T("&Min Filter"));
 	lab6Menu->Append(MAX_FILTER_IMAGE_ID, _T("&Max Filter"));
 	lab6Menu->Append(MID_FILTER_IMAGE_ID, _T("&Mid Filter"));
@@ -464,7 +469,7 @@ void MyFrame::OnConvoluteImage(wxCommandEvent & WXUNUSED(event)) {
 
 					r += ((loadedImage.GetRed(i - c, j - a))
 							* mask[c + 1][a + 1]);
-					
+
 					g += ((loadedImage.GetGreen(i - c, j - a))
 							* mask[c + 1][a + 1]);
 					b += ((loadedImage.GetBlue(i - c, j - a))
@@ -1147,20 +1152,20 @@ void MyFrame::OnAutomatedThresholdImage(wxCommandEvent & WXUNUSED(event)) {
 
 void MyFrame::FindInitialThreshold(wxImage loadedImage, double *thresh)
 {
-	int red_sum = loadedImage.GetRed(0,0) + 
-			loadedImage.GetRed(0,loadedImage.GetHeight()-1) + 
-			loadedImage.GetRed(loadedImage.GetWidth()-1,0) + 
+	int red_sum = loadedImage.GetRed(0,0) +
+			loadedImage.GetRed(0,loadedImage.GetHeight()-1) +
+			loadedImage.GetRed(loadedImage.GetWidth()-1,0) +
 			loadedImage.GetRed(loadedImage.GetWidth()-1,loadedImage.GetHeight()-1);
-	
-	int green_sum = loadedImage.GetGreen(0,0) + 
-					loadedImage.GetGreen(0,loadedImage.GetHeight()-1) + 
-					loadedImage.GetGreen(loadedImage.GetWidth()-1,0) + 
+
+	int green_sum = loadedImage.GetGreen(0,0) +
+					loadedImage.GetGreen(0,loadedImage.GetHeight()-1) +
+					loadedImage.GetGreen(loadedImage.GetWidth()-1,0) +
 					loadedImage.GetGreen(loadedImage.GetWidth()-1,loadedImage.GetHeight()-1);
-	
-	
-	int blue_sum = loadedImage.GetBlue(0,0) + 
-			loadedImage.GetBlue(0,loadedImage.GetHeight()-1) + 
-			loadedImage.GetBlue(loadedImage.GetWidth()-1,0) + 
+
+
+	int blue_sum = loadedImage.GetBlue(0,0) +
+			loadedImage.GetBlue(0,loadedImage.GetHeight()-1) +
+			loadedImage.GetBlue(loadedImage.GetWidth()-1,0) +
 			loadedImage.GetBlue(loadedImage.GetWidth()-1,loadedImage.GetHeight()-1);
 
 	thresh[0] = red_sum/4;
@@ -1176,9 +1181,9 @@ void MyFrame::FindInitialThreshold2(wxImage loadedImage, double *thresh)
 	long unsigned int red_sum =0;
 	long unsigned int green_sum = 0;
 	long unsigned int blue_sum =0;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(!((i==0&&j==0) || (i==loadedImage.GetWidth() && j==0) || (i==0&&j==loadedImage.GetHeight()) || (i==loadedImage.GetWidth() && j==loadedImage.GetHeight()) ))
 			{
@@ -1202,9 +1207,9 @@ double MyFrame::FindRedThreshold(wxImage loadedImage, double current_thresh)
 	int sum =0;
 	int counter =0;
 	double mu_o, mu_b;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetRed(i,j) > current_thresh)
 			{
@@ -1213,13 +1218,13 @@ double MyFrame::FindRedThreshold(wxImage loadedImage, double current_thresh)
 
 			}
 		}
-	}	
+	}
 	mu_o = sum/counter;
 	sum = 0;
 	counter = 0;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetRed(i,j) < current_thresh)
 			{
@@ -1237,9 +1242,9 @@ double MyFrame::FindGreenThreshold(wxImage loadedImage, double current_thresh)
 	int sum =0;
 	int counter =0;
 	double mu_o, mu_b;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetGreen(i,j) > current_thresh)
 			{
@@ -1248,13 +1253,13 @@ double MyFrame::FindGreenThreshold(wxImage loadedImage, double current_thresh)
 
 			}
 		}
-	}	
+	}
 	mu_o = sum/counter;
 	sum = 0;
 	counter = 0;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetGreen(i,j) < current_thresh)
 			{
@@ -1272,9 +1277,9 @@ double MyFrame::FindBlueThreshold(wxImage loadedImage, double current_thresh)
 	int sum =0;
 	int counter =0;
 	double mu_o, mu_b;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetBlue(i,j) > current_thresh)
 			{
@@ -1283,13 +1288,13 @@ double MyFrame::FindBlueThreshold(wxImage loadedImage, double current_thresh)
 
 			}
 		}
-	}	
+	}
 	mu_o = sum/counter;
 	sum = 0;
 	counter = 0;
-	for (int i = 0; i < loadedImage.GetWidth(); i++) 
+	for (int i = 0; i < loadedImage.GetWidth(); i++)
 	{
-		for (int j = 0; j < loadedImage.GetHeight(); j++) 
+		for (int j = 0; j < loadedImage.GetHeight(); j++)
 		{
 			if(loadedImage.GetBlue(i,j) < current_thresh)
 			{
@@ -1379,11 +1384,18 @@ void MyFrame::OnResetImage(wxCommandEvent & WXUNUSED(event)) {
 }
 
 //IMAGE SAVING
-void MyFrame::OnSaveImage(wxCommandEvent & WXUNUSED(event)) {
+void MyFrame::OnSaveImage(wxCommandEvent & WXUNUSED(event))
+{
+    wxFileDialog
+        saveFileDialog(this, _("Save image file"), "", "",
+        		"(*.bmp)|*.bmp", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+    if (saveFileDialog.ShowModal() == wxID_CANCEL)
+        return;
+
 
 	printf("Saving image...");
 
-	loadedImage.SaveFile(wxT("Saved_Image.bmp"), wxBITMAP_TYPE_BMP);
+	loadedImage.SaveFile(wxT("saveFileDialog.GetPath()"), wxBITMAP_TYPE_BMP);
 
 	printf("Finished Saving.\n");
 }
@@ -1429,7 +1441,7 @@ void MyFrame::Undo(wxCommandEvent & WXUNUSED(event)) {
 
 		UndoImages.pop_back();
 		printf(" size of undo stack: %lu \n", UndoImages.size());
-		
+
 	} else {
 		printf("can't undo\n");
 	}
